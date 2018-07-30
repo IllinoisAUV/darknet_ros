@@ -1,0 +1,14 @@
+yolo_model:
+
+  config_file:
+    name: tiny.cfg
+  weight_file:
+    name: yolov3-tiny_114000.weights
+  threshold:
+    value: 0.2
+  detection_classes:
+    names:
+      - D1
+      - D2
+      - D5
+      - D6
