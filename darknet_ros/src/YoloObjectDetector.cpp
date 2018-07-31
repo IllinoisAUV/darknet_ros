@@ -59,6 +59,9 @@ bool YoloObjectDetector::readParameters()
   nodeHandle_.param("image_view/wait_key_delay", waitKeyDelay_, 3);
   nodeHandle_.param("image_view/enable_console_output", enableConsoleOutput_, false);
 
+  // get active parameter
+  nodeHandle_.param("active", active_, true);
+
   // Check if Xserver is running on Linux.
   if (XOpenDisplay(NULL)) {
     // Do nothing!
@@ -523,7 +526,17 @@ void YoloObjectDetector::yolo()
 
   demoTime_ = what_time_is_it_now();
 
+  if(!nodeHandle_.getParam("active", active_))
+  {
+    active_ = false;
+  }
+
   while (!demoDone_) {
+    if(!active_)
+    {
+	// if thread is active, then continue
+	continue;
+    }
     buffIndex_ = (buffIndex_ + 1) % 3;
     fetch_thread = std::thread(&YoloObjectDetector::fetchInThread, this);
     detect_thread = std::thread(&YoloObjectDetector::detectInThread, this);
@@ -546,7 +559,6 @@ void YoloObjectDetector::yolo()
       demoDone_ = true;
     }
   }
-
 }
 
 IplImage* YoloObjectDetector::getIplImage()

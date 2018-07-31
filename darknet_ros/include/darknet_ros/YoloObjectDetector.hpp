@@ -175,6 +175,7 @@ class YoloObjectDetector
   float demoThresh_ = 0;
   float demoHier_ = .5;
   int running_ = 0;
+  bool active_;	/**< tells whether YOLO is actively running or not */
 
   int demoDelay_ = 0;
   int demoFrame_ = 3;
